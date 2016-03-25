@@ -1,24 +1,35 @@
-//  JS Group Solo Project
-//  Erika Klein, Travis Ingram, Lisa Mabley, Jessica Oakes
+// Solo STI Project
 
-var atticus = ["Atticus", "2405", "47000", 3];
-var jem = ["Jem", "62347", "63500", 4];
-var boo = ["Boo", "11435", "54000", 3];
-var scout = ["Scout", "6243", "74750", 5];
+// Constructor
+function Employee(name, empNum, anSal, rating) {
+  this.firstName = name;
+  this.employeeNumber = parseInt(empNum);
+  this.annualSalary = parseInt(anSal);
+  this.recentPerformanceRating = rating;
+}
 
+// Create employee objects
+var atticus = new Employee ("Atticus", "2405", "47000", 3);
+var jem = new Employee ("Jem", "62347", "63500", 4);
+var boo = new Employee ("Boo", "11435", "54000", 3);
+var scout = new Employee ("Scout", "6243", "74750", 5);
+
+// Create employee list
 var employees = [atticus, jem, boo, scout];
-//loop here
 
+// Loop through employee list
 for(var i = 0; i < employees.length; i++) {
-  var employee = employees[i];
-  var name = employee[0];
-  var startSal = parseInt(employee[2]);
-  var adjustedSal = 0;
-  var reviewScore = employee[3];
-  var perBonus = 0;
-  var bonusAmount = 0;
+  getBonus(employees[i]);
+}
 
-  switch(reviewScore) {
+console.log(employees);
+
+// Functions
+function getBonus(employee) {
+  var startSal = employee.annualSalary;
+  var perBonus = 0;
+
+  switch(employee.recentPerformanceRating) {
    case 3:
      perBonus = 0.04;
      break;
@@ -36,7 +47,7 @@ for(var i = 0; i < employees.length; i++) {
      break;
   }
 
-  if(employee[1].length == 4) {
+  if(employee.employeeNumber.length == 4) {
    perBonus += .05;
   }
 
@@ -48,24 +59,24 @@ for(var i = 0; i < employees.length; i++) {
    perBonus = 0.13;
   }
 
-  var bonusString = (perBonus * 100) + "%";
+  employee.bonusPercentage = (perBonus * 100);
+  employee.bonusAmount = getBonusAmount(startSal, perBonus);
+  employee.adjustedSalary = getAdjustedSal(startSal, perBonus);
 
-  bonusAmount = getBonusAmount(startSal, perBonus);
-  adjustedSal = getAdjustedSal(startSal, perBonus);
+}
 
-  bonusAmountString = "$" + bonusAmount.toLocaleString();
-  adjustedSalString = "$" + adjustedSal.toLocaleString();
+function getBonusAmount(salary, bonusPercentage) {
+  return Math.round(bonusPercentage * salary);
+}
 
-  function getBonusAmount(salary, bonusPercentage) {
-    return Math.round(bonusPercentage * salary);
+function getAdjustedSal(salary, bonusPercentage) {
+  return salary + getBonusAmount(salary, bonusPercentage);
+}
 
-  }
+function dollarDisplay(number) {
+  number = "$" + number.toLocaleString();
+}
 
-  function getAdjustedSal(salary, bonusPercentage) {
-    return salary + getBonusAmount(salary, bonusPercentage);
-
-  }
-
-  console.log([name, bonusString, adjustedSalString, bonusAmountString]);
-
+function percentageDisplay(number) {
+  number += '%';
 }
